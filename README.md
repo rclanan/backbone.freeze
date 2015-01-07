@@ -1,2 +1,2 @@
-# backbone-immutable-collection
-Immutable Collections for Backbone.js
+# backbone-immutable
+Immutable Collections and Models for Backbone.js
