@@ -9,7 +9,7 @@ define([
 
     var errorFunction = function(action) {
         throw new Error('Attempting to ' + action + '  a model that is immutable. ' +
-        'Please clone this for a mutable version.');
+                        'Please clone this for a mutable version.');
     };
 
     /** METHODS THAT NEED TO BE INSERTED AFTER CONSTRUCTION */
