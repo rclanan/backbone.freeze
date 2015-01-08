@@ -1,36 +1,59 @@
 define([
-    'backbone'
+    'backbone',
+    'underscore'
 ], function (
-    Backbone
+    Backbone,
+    _
 ) {
     "use strict";
 
-    var errorMessage = function(action) {
-        return 'Attempting to ' + action + '  a model that is immutable. Please clone this for a mutable version.';
+    var errorFunction = function(action) {
+        throw new Error('Attempting to ' + action + '  a model that is immutable. ' +
+        'Please clone this for a mutable version.');
     };
+
+    /** METHODS THAT NEED TO BE INSERTED AFTER CONSTRUCTION */
 
     /**
-     * Set throws an error, because you cannot set attributes on an immutable model.
+     * Methods that just throw an error. They all throw an error because the action is not
+     * allowed on an immutable model. These methods are inserted after construction because
+     * they're used during the construction of the model.
      */
-    var setFunction = function() {
-        throw errorMessage('set attributes on');
+    var postConstructErroringMethods = {
+        set:        'set attributes on',
+        _validate:  'validate',
+        trigger:    'trigger events on'
     };
+
+    /** END POST CONSTRUCT METHODS */
+
+    /** METHODS THAT JUST THROW AN ERROR */
 
     /**
-     * _validate throws an error, because you cannot validate an immutable model.
+     * Methods that just throw an error. There all throw an error because the action is not
+     * allowed on an immutable model.
      */
-    var _validateFunction =  function() {
-        throw errorMessage('validate');
+    var erroringMethods = {
+        sync:               'call sync on',
+        unset:              'unset properties on',
+        clear:              'clear',
+        hasChanged:         'view change events on',
+        changedAttributes:  'view changed attributes of',
+        previous:           'view previous values of',
+        previousAttributes: 'view previous values of',
+        fetch:              'fetc',
+        save:               'save',
+        destroy:            'destroy',
+        url:                'get the server url of',
+        isNew:              'isNew',
+        isValid:            'isValid',
+        on:                 'listen to',
+        once:               'listen to',
+        off:                'listen to',
+        stopListening:      'listen to'
     };
 
-    /**
-     * Trigger throws an error, because you cannot trigger events on an immutable model.
-     */
-    var triggerFunction = function() {
-        throw errorMessage('trigger events on');
-    };
-
-    return Backbone.Model.extend({
+    var ImmutableModel = Backbone.Model.extend({
 
         /**
          * Constructor for the immutable model.
@@ -42,91 +65,16 @@ define([
          * @param options
          */
         constructor: function (attributes, options) {
-            // Call the normal backbone model constructor
+            // Call the normal backbone collection constructor
             Backbone.Model.prototype.constructor.call(this, attributes, options);
 
             // Set the functions that the constructor needs to work to no longer work if they would 
             // be modifying the model, after the constructor is done using it
-            this.set = setFunction;
-            this._validate = _validateFunction;
-            this.trigger = triggerFunction;
-        },
-
-        /**
-         * Sync throws an error, because there is nothing to update.
-         */
-        sync: function() {
-            throw errorMessage('call sync on');
-        },
-
-        /**
-         * Unset throws an error, because you cannot unset a property on an immutable model.
-         */
-        unset: function() {
-            throw errorMessage('unset properties on');
-        },
-
-        /**
-         * Clear throws an error, because you cannot clean an immutable model.
-         */
-        clear: function() {
-            throw errorMessage('clear');
-        },
-
-        /**
-         * HasChanged throws an error, because since the model can't change, it doesn't have change events.
-         */
-        hasChanged: function() {
-            throw errorMessage('view change events on');
-        },
-
-        /**
-         * ChangedAttributes throws an error,because since the model can't change, it doesn't have change events.
-         */
-        changedAttributes: function() {
-            throw errorMessage('view changed attributes of');
-        },
-
-        /**
-         * Previous throws an error, because since the model can't change, it doesn't have a previous value.
-         */
-        previous: function() {
-            throw errorMessage('view previous values of');
-        },
-
-        /**
-         * PreviousAttributes throws an error, because since the model can't change, it doesn't have previous values.
-         */
-        previousAttributes: function() {
-            throw errorMessage('view previous values of');
-        },
-
-        /**
-         * Fetch throws an error, because you cannot fetch an immutable model.
-         */
-        fetch: function() {
-            throw errorMessage('fetch')
-        },
-
-        /**
-         * Save throws an error, because you cannot save an immutable model.
-         */
-        save: function() {
-            throw errorMessage('save');
-        },
-
-        /**
-         * Destroy throws an error, because you cannot destroy an immutable model.
-         */
-        destroy: function() {
-            throw errorMessage('destroy');
-        },
-
-        /**
-         * Url throws an error, because you cannot get the server url of an immutable model.
-         */
-        url: function() {
-            throw errorMessage('get the server url of');
+            _.each(postConstructErroringMethods, function(message, methodName) {
+                this[methodName] = function() {
+                    errorFunction(message);
+                }
+            });
         },
 
         /**
@@ -136,51 +84,9 @@ define([
          */
         clone: function() {
             return new Backbone.Model(this.attributes);
-        },
-
-        /**
-         * IsNew throws an error, because an immutable model cannot be saved to a server.
-         */
-        isNew: function() {
-            throw errorMessage('isNew');
-        },
-
-        /**
-         * IsValid throws an error, because an immutable model cannot be saved to a server.
-         */
-        isValid: function() {
-            throw errorMessage('isValid');
-        },
-
-        /**
-         * On throws an error, because you cannot listen to to an immutable model.
-         */
-        on: function() {
-            throw errorMessage('listen to');
-        },
-
-        /**
-         * Once throws an error, because you cannot listen to to an immutable model.
-         */
-        once: function() {
-            throw errorMessage('listen to');
-        },
-
-        /**
-         * Off throws an error, because you cannot listen to to an immutable model.
-         */
-        off: function() {
-            throw errorMessage('listen to');
-        },
-
-        /**
-         * StopListening throws an error, because you cannot listen to to an immutable model.
-         */
-        stopListening: function() {
-            throw errorMessage('listen to');
         }
 
-        /* Methods to leave alone, because they don't affect the contents of the collection:
+        /* Methods to leave alone, because they don't affect the contents of the model:
          initialize,
          toJSON,
          get,
@@ -189,4 +95,12 @@ define([
          */
 
     });
+
+    _.each(erroringMethods, function(message, methodName) {
+        ImmutableModel.prototype[methodName] = function() {
+            errorFunction(message);
+        }
+    });
+    
+    return ImmutableModel;
 });

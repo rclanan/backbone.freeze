@@ -1,230 +1,130 @@
 define([
     'backbone',
-    './backbone.immutable.model' 
+    'underscore',
+    './backbone.immutable.model'
 ], function (
     Backbone,
+    _,
     ImmutableModel
 ) {
     "use strict";
-    
-    var errorMessage = function(action) {
-        return 'Attempting to ' + action + '  a collection that is immutable. Please clone this for a mutable version.';
+
+    var errorFunction = function(action) {
+        throw new Error('Attempting to ' + action + '  a collection that is immutable. ' +
+                        'Please clone this for a mutable version.');
     };
 
     /** METHODS THAT NEED TO BE INSERTED AFTER CONSTRUCTION */
-    
-    /**
-     * Set throws an error, because you cannot set items on an immutable collection.
-     */
-    var setFunction = function() {
-        throw errorMessage('set elements in');
-    };
 
-    /**
-     * Add throws an error, because you cannot add to an immutable collection.
+    /** 
+     * Methods that just throw an error. They all throw an error because the action is not
+     * allowed on an immutable collection. These methods are inserted after construction because
+     * they're used during the construction of the collection.
      */
-    var addFunction = function() {
-        throw errorMessage('add items to');
-    };
-
-    /**
-     * Remove throws an error, because you cannot remove from an immutable collection.
-     */
-    var removeFunction = function() {
-        throw errorMessage('remove items from');
+    var postConstructErroringMethods = {
+        set:                'set elements in',
+        add:                'add items to',
+        remove:             'remove items from',
+        trigger:            'trigger events on',
+        reset:              'reset',
+        _reset:             'reset',
+        _prepareModel:      'prepare the model of',
+        _addReference:      'add a reference to',
+        _removeReference:   'remove a reference to',
+        _onModelEvent:      'listen to a model event'
     };
 
     /**
      * Returns a sorted copy of the collection in mutable form.
+     * 
      * @param options
      */
-    var sortFunction = (options) {
+    var sortFunction = function(options) {
         return this.clone().sort(options);
     };
 
-    /**
-     * Trigger throws an error, because you cannot trigger events on to an immutable collection.
-     */
-    var triggerFunction = function() {
-        throw errorMessage('trigger events on');
-    };
+    /** END POST CONSTRUCT METHODS */
+
+    /** METHODS THAT JUST THROW AN ERROR */
 
     /**
-     * Reset throws an error, because you cannot reset an immutable collection.
+     * Methods that just throw an error. There all throw an error because the action is not
+     * allowed on an immutable collection.
      */
-    var resetFunction = function() {
-        throw errorMessage('reset');
+    var erroringMethods = {
+        sync:           'call sync on',
+        push:           'push items to',
+        pop:            'pop items from',
+        unshift:        'unshift items to',
+        shift:          'shift items from',
+        fetch:          'fetc',
+        create:         'create items in',
+        on:             'listen to',
+        once:           'listen to',
+        off:            'listen to',
+        stopListening:  'listen to'
     };
     
-    /**
-     * _reset throws an error, because you cannot reset an immutable collection.
-     */
-    var _resetFunction = function() {
-        throw errorMessage('reset');
-    };
+    /** END ERROR METHODS */
 
-    /**
-     * _prepareModel throws an error, because you cannot prepare the model of an immutable collection.
-     */
-    var _prepareModelFunction = function() {
-        throw errorMessage('prepare the model of');
-    };
-
-    /**
-     * _addReference throws an error, because you cannot add a reference to an immutable collection.
-     */
-    var _addReferenceFunction = function() {
-        throw errorMessage('add a reference to');
-    };
-
-    /**
-     * _removeReference throws an error, because you cannot remove a reference to an immutable collection.
-     */
-    var _removeReferenceFunction = function() {
-        throw errorMessage('remove a reference to');
-    };
-
-    /**
-     * _onModelEvent throws an error, because you immutable models will not fire events.
-     */
-    var _onModelEventFunction = function() {
-        throw errorMessage('listen to a model event');
-    };
-
-    /** END METHODS */
-    
-    return Backbone.Collection.extend({
+    var ImmutableCollection = Backbone.Collection.extend({
 
         /**
-         * Use an immutable model, otherwise people can mess with the model itself. 
+         * Use an immutable model, otherwise people can mess with the model itself.
          */
         model: ImmutableModel,
 
         /**
          * Constructor for the immutable collection.
-         * 
-         * Uses all the default backbone collection constructor mechanisms, and then 
-         * replaces all the methods it uses with the immutable versions. 
-         * 
+         *
+         * Uses all the default backbone collection constructor mechanisms, and then
+         * replaces all the methods it uses with the immutable versions.
+         *
          * @param models
          * @param options
          */
         constructor: function (models, options) {
             // Call the normal backbone collection constructor
             Backbone.Collection.prototype.constructor.call(this, models, options);
-            
+
             // Set the functions that the constructor needs to work to no longer work if they would 
             // be modifying the collection, after the constructor is done using it
-            this.set = setFunction;
-            this.add = addFunction;
-            this.remove = removeFunction;
+            _.each(postConstructErroringMethods, function(message, methodName) {
+                this[methodName] = function() {
+                    errorFunction(message);
+                }
+            });
             this.sort = sortFunction;
-            this.trigger = triggerFunction;
-            this.reset = resetFunction;
-            this._reset = _resetFunction;
-            this._prepareModel = _prepareModelFunction;
-            this._addReference = _addReferenceFunction;
-            this._removeReference = _removeReferenceFunction;
-            this._onModelEvent = _onModelEventFunction;
-        },
-
-        /**
-         * Sync throws an error, because there is nothing to update. 
-         */
-        sync: function() {
-            throw errorMessage('call sync on');
-        },
-
-        /**
-         * Push throws an error, because you cannot push to an immutable collection.
-         */
-        push: function() {
-            throw errorMessage('push items to');
-        },
-
-        /**
-         * Pop throws an error, because you cannot pop from an immutable collection.
-         */
-        pop: function() {
-            throw errorMessage('pop items from');
-        },
-
-        /**
-         * Unshift throws an error, because you cannot unshift to an immutable collection.
-         */
-        unshift: function() {
-            throw errorMessage('unshift items to');
-        },
-
-        /**
-         * Shift throws an error, because you cannot shift from an immutable collection.
-         */
-        shift: function() {
-            throw errorMessage('shift items from');
-        },
-
-        /**
-         * Fetch throws an error, because you cannot fetch an immutable collection.
-         */
-        fetch: function() {
-            throw errorMessage('fetch')
-        },
-
-        /**
-         * Create throws an error, because you cannot create a new model in an immutable collection.
-         */
-        create: function() {
-            throw errorMessage('create items in');
         },
 
         /**
          * Returns a mutable collection that is a copy of this immutable one.
-         * 
+         *
          * @returns {Backbone.Collection}
          */
         clone: function() {
             return new Backbone.Collection(this.models);
-        },
-
-        /**
-         * On throws an error, because you cannot listen to to an immutable collection.
-         */
-        on: function() {
-            throw errorMessage('listen to');
-        },
-
-        /**
-         * Once throws an error, because you cannot listen to to an immutable collection.
-         */
-        once: function() {
-            throw errorMessage('listen to');
-        },
-
-        /**
-         * Off throws an error, because you cannot listen to to an immutable collection.
-         */
-        off: function() {
-            throw errorMessage('listen to');
-        },
-
-        /**
-         * StopListening throws an error, because you cannot listen to to an immutable collection.
-         */
-        stopListening: function() {
-            throw errorMessage('listen to');
         }
-        
+
         /* Methods to leave alone, because they don't affect the contents of the collection:
-            initialize,
-            toJSON,
-            slice,
-            get,
-            at, 
-            where,
-            findWhere,
-            pluck,
-            parse
+         initialize,
+         toJSON,
+         slice,
+         get,
+         at, 
+         where,
+         findWhere,
+         pluck,
+         parse
          */
-        
+
     });
+    
+    _.each(erroringMethods, function(message, methodName) {
+        ImmutableCollection.prototype[methodName] = function() {
+            errorFunction(message);
+        }
+    });
+    
+    return ImmutableCollection;
 });
