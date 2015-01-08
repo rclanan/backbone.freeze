@@ -1,9 +1,9 @@
 define([
-    'backbone'//,
-    // './backbone.immutable.model' TODO
+    'backbone',
+    './backbone.immutable.model' 
 ], function (
-    Backbone//,
-    // ImmutableModel TODO
+    Backbone,
+    ImmutableModel
 ) {
     "use strict";
     
@@ -98,7 +98,7 @@ define([
         /**
          * Use an immutable model, otherwise people can mess with the model itself. 
          */
-        // model: ImmutableModel, TODO
+        model: ImmutableModel,
 
         /**
          * Constructor for the immutable collection.
