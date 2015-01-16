@@ -1,0 +1,22 @@
+{
+  "name": "backbone.freeze",
+  "version": "0.1.0",
+  "homepage": "https://github.com/benmanbs/backbone.freeze",
+  "authors": [
+    "Benjamin Shai <benmanbs@gmail.com>"
+  ],
+  "description": "Immutable Collections and Models for Backbone.js",
+  "keywords": [
+    "backbone",
+    "immutable",
+    "freeze"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
