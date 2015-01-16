@@ -53,7 +53,7 @@ define([
         stopListening:      'listen to'
     };
 
-    var ImmutableModel = Backbone.Model.extend({
+    var FreezeModel = Backbone.Model.extend({
 
         /**
          * Constructor for the immutable model.
@@ -97,10 +97,10 @@ define([
     });
 
     _.each(erroringMethods, function(message, methodName) {
-        ImmutableModel.prototype[methodName] = function() {
+        FreezeModel.prototype[methodName] = function() {
             errorFunction(message);
         }
     });
     
-    return ImmutableModel;
+    return FreezeModel;
 });

@@ -1,11 +1,11 @@
 define([
     'backbone',
     'underscore',
-    './backbone.immutable.model'
+    './backbone.freeze.model'
 ], function (
     Backbone,
     _,
-    ImmutableModel
+    FreezeModel
 ) {
     "use strict";
 
@@ -67,12 +67,12 @@ define([
     
     /** END ERROR METHODS */
 
-    var ImmutableCollection = Backbone.Collection.extend({
+    var FreezeCollection = Backbone.Collection.extend({
 
         /**
          * Use an immutable model, otherwise people can mess with the model itself.
          */
-        model: ImmutableModel,
+        model: FreezeModel,
 
         /**
          * Constructor for the immutable collection.
@@ -121,10 +121,10 @@ define([
     });
     
     _.each(erroringMethods, function(message, methodName) {
-        ImmutableCollection.prototype[methodName] = function() {
+        FreezeCollection.prototype[methodName] = function() {
             errorFunction(message);
         }
     });
     
-    return ImmutableCollection;
+    return FreezeCollection;
 });
