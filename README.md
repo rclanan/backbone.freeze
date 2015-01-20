@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/benmanbs/backbone.freeze.svg)](https://travis-ci.org/benmanbs/backbone.freeze)
+
 # backbone.freeze
 Immutable Collections and Models for Backbone.js. Freeze is designed to hold collections/models that will never change during the lifespan of your JS. 
 
@@ -5,9 +7,13 @@ Freeze follows the principle of Fail Loudly; when you attempt to modify a collec
 
 #Installing
 
-Freeze is available on bower as "backbone.freeze"
+Freeze is available on npm bower as "backbone.freeze"
 ```
 bower install backbone.freeze
+
+OR
+
+npm install backbone.freeze
 ```
 
 #Examples

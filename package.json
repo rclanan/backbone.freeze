@@ -1,0 +1,38 @@
+{
+  "name": "backbone.freeze",
+  "version": "0.1.4",
+  "description": "Immutable Collections and Models for Backbone.js",
+  "main": "dist/backbone.freeze.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benmanbs/backbone.freeze.git"
+  },
+  "keywords": [
+    "backbone",
+    "immutable",
+    "freeze"
+  ],
+  "author": "Benjamin Shai <benmanbs@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benmanbs/backbone.freeze/issues"
+  },
+  "homepage": "https://github.com/benmanbs/backbone.freeze",
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "del": "^1.1.1",
+    "gulp": "^3.8.10",
+    "gulp-json-editor": "^2.2.1",
+    "gulp-mocha": "^2.0.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-webpack": "^1.1.2",
+    "mocha": "^2.1.0"
+  },
+  "dependencies": {
+    "backbone": "1.0.0 - 1.1.2",
+    "underscore": "1.4.4 - 1.7.0"
+  }
+}
