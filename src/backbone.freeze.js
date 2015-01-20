@@ -2,8 +2,17 @@
 
 var FreezeCollection = require('./backbone.freeze.collection');
 var FreezeModel = require('./backbone.freeze.model');
+var Backbone = require('backbone');
+var originalFreeze = Backbone.Freeze;
 
-module.exports = {
+var Freeze = {
     Collection: FreezeCollection,
-    Model: FreezeModel
+    Model: FreezeModel,
+
+    noConflict: function () { 
+        Backbone.Freeze = originalFreeze;
+        return Freeze;
+    }
 };
+
+module.exports = Freeze;

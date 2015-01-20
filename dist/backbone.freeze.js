@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("backbone"), require("underscore")) : factory(root["Backbone"], root["_"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_4__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -56,24 +56,39 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	var FreezeCollection = __webpack_require__(1);
-	var FreezeModel = __webpack_require__(2);
+	var FreezeCollection = __webpack_require__(2);
+	var FreezeModel = __webpack_require__(3);
+	var Backbone = __webpack_require__(1);
+	var originalFreeze = Backbone.Freeze;
 
-	module.exports = {
+	var Freeze = {
 	    Collection: FreezeCollection,
-	    Model: FreezeModel
+	    Model: FreezeModel,
+
+	    noConflict: function () { 
+	        Backbone.Freeze = originalFreeze;
+	        return Freeze;
+	    }
 	};
+
+	module.exports = Freeze;
 
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 
-	var Backbone = __webpack_require__(3);
+	var Backbone = __webpack_require__(1);
 	var _ = __webpack_require__(4);
-	var FreezeModel = __webpack_require__(2);
+	var FreezeModel = __webpack_require__(3);
 
 	var errorFunction = function(action) {
 	    throw new Error('Attempting to ' + action + ' a collection that is immutable. ' +
@@ -200,12 +215,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var Backbone = __webpack_require__(3);
+	var Backbone = __webpack_require__(1);
 	var _ = __webpack_require__(4);
 
 	var errorFunction = function(action) {
@@ -287,7 +302,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    /**
-	     * 
+	     * On is a no op because the construction of a collection uses on after
+	     * construction of the model. 
 	     */
 	    on: function() {}
 
@@ -311,12 +327,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
 
 /***/ },
 /* 4 */
