@@ -8,7 +8,7 @@ fi
 # Get the current git status, and make sure there's nothing to commit on this branch
 STATUS=$(git status)
 
-if [[ $STATUS != *"nothing to commit"* ]]
+if [[ $STATUS != *"nothing to commit"* || $STATUS != *"Your branch is up-to-date"* ]]
 then
   echo "You must have a branch that is up to date to run this publisher. Please commit all changes and try again."
   exit 1
