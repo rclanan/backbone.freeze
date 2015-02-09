@@ -28,7 +28,6 @@ describe('Freeze Model', function() {
             { name: 'off',                error: 'listen to'},
             { name: 'stopListening',      error: 'listen to'},
             { name: 'set',                error: 'set attributes on'},
-            { name: '_validate',          error: 'validate'},
             { name: 'trigger',            error: 'trigger events on'}
         ];
         

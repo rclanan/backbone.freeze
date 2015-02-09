@@ -237,7 +237,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	var postConstructErroringMethods = {
 	    set:        'set attributes on',
-	    _validate:  'validate',
 	    trigger:    'trigger events on'
 	};
 
@@ -312,7 +311,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	     toJSON,
 	     get,
 	     escape,
-	     parse
+	     parse,
+	     _validate
 	     */
 
 	});

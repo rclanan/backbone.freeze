@@ -17,7 +17,6 @@ var errorFunction = function(action) {
  */
 var postConstructErroringMethods = {
     set:        'set attributes on',
-    _validate:  'validate',
     trigger:    'trigger events on'
 };
 
@@ -92,7 +91,8 @@ var FreezeModel = Backbone.Model.extend({
      toJSON,
      get,
      escape,
-     parse
+     parse,
+     _validate
      */
 
 });
