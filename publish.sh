@@ -18,8 +18,11 @@ fi
 VERSION=$(ruby update_version.rb $1)
 echo "Upgrading to version $VERSION"
 
-# Call gulp bower to roll the version in bower.json
-gulp bower
+# Call gulp clean to empty the dist folder
+gulp clean
+
+# Call gulp dist to create the distribution of the code, which also calls bower to create the bower file
+gulp dist
 
 # Push the change to the version numbers in the json files
 git commit -a -m "updated to version $VERSION"
