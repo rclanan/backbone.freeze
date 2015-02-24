@@ -263,7 +263,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    isNew:              'isNew',
 	    isValid:            'isValid',
 	    once:               'listen to',
-	    off:                'listen to',
 	    stopListening:      'listen to'
 	};
 
@@ -304,7 +303,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * On is a no op because the construction of a collection uses on after
 	     * construction of the model. 
 	     */
-	    on: function() {}
+	    on: function() {},
+
+
+	    /**
+	     * Off is a no op because the construction of a collection uses off after
+	     * construction of the model. 
+	     */
+	    off: function() {}
+
 
 	    /* Methods to leave alone, because they don't affect the contents of the model:
 	     initialize,
