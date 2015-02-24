@@ -25,7 +25,6 @@ describe('Freeze Model', function() {
             { name: 'isNew',              error: 'isNew'},
             { name: 'isValid',            error: 'isValid'},
             { name: 'once',               error: 'listen to'},
-            { name: 'off',                error: 'listen to'},
             { name: 'stopListening',      error: 'listen to'},
             { name: 'set',                error: 'set attributes on'},
             { name: 'trigger',            error: 'trigger events on'}
@@ -53,6 +52,11 @@ describe('Freeze Model', function() {
 
         it("doesn't do anything when on is called", function() {
             model.on('event', function() { called = true; });
+            expect(model._events).to.be.undefined;
+        });
+        
+        it("doesn't do anything when off is called", function() {
+            model.off('event', function() { called = true; });
             expect(model._events).to.be.undefined;
         });
         
