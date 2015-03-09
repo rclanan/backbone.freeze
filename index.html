@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Backbone.freeze by benmanbs</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Backbone.freeze</h1>
+        <p>Immutable Collections and Models for Backbone.js</p>
+
+        <p class="view"><a href="https://github.com/benmanbs/backbone.freeze">View the Project on GitHub <small>benmanbs/backbone.freeze</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/benmanbs/backbone.freeze/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/benmanbs/backbone.freeze/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/benmanbs/backbone.freeze">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><a href="https://travis-ci.org/benmanbs/backbone.freeze"><img src="https://travis-ci.org/benmanbs/backbone.freeze.svg" alt="Build Status"></a></p>
+
+<h1>
+<a id="backbonefreeze" class="anchor" href="#backbonefreeze" aria-hidden="true"><span class="octicon octicon-link"></span></a>backbone.freeze</h1>
+
+<p>Immutable Collections and Models for Backbone.js. Freeze is designed to hold collections/models that will never change during the lifespan of your JS. </p>
+
+<p>Freeze follows the principle of Fail Loudly; when you attempt to modify a collection or model it will throw an error.</p>
+
+<h1>
+<a id="installing" class="anchor" href="#installing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing</h1>
+
+<p>Freeze is available on npm bower as "backbone.freeze"</p>
+
+<pre><code>bower install backbone.freeze
+
+OR
+
+npm install backbone.freeze
+</code></pre>
+
+<h1>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h1>
+
+<p>Freeze.Collection:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// List of usable countries should never change</span>
+<span class="pl-s">var</span> usableCountries <span class="pl-k">=</span> [
+    { id<span class="pl-k">:</span> <span class="pl-c1">1</span>, name<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>United States<span class="pl-pds">"</span></span> },
+    { id<span class="pl-k">:</span> <span class="pl-c1">2</span>, name<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>Canada<span class="pl-pds">"</span></span> },
+    { id<span class="pl-k">:</span> <span class="pl-c1">3</span>, name<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>England<span class="pl-pds">"</span></span> }
+];
+<span class="pl-s">var</span> usableCountriesImmutable <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Backbone.Freeze</span>.Collection(usableCountries);
+
+usableCountriesImmutable.<span class="pl-s3">add</span>({ id<span class="pl-k">:</span> <span class="pl-c1">4</span>, name<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>Mexico<span class="pl-pds">"</span></span>}); <span class="pl-c">// This will throw an error!</span></pre></div>
+
+<p>Freeze.Model:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// The description of a rectangle should never change after construction, or that would make area incorrect </span>
+<span class="pl-c">// TODO - make area calculate on change</span>
+<span class="pl-s">var</span> rectangle <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Backbone.Freeze</span>.Model({
+    color<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>red<span class="pl-pds">"</span></span>,
+    width<span class="pl-k">:</span> <span class="pl-c1">7</span>,
+    height<span class="pl-k">:</span> <span class="pl-c1">5</span>,
+    area<span class="pl-k">:</span> <span class="pl-c1">35</span>
+});
+
+rectangle.set(<span class="pl-s1"><span class="pl-pds">'</span>height<span class="pl-pds">'</span></span>, <span class="pl-c1">10</span>); <span class="pl-c">// This will throw an error!</span></pre></div>
+
+<h1>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h1>
+
+<ul>
+<li>Backbone 1.0.0 - 1.1.2</li>
+<li>Underscore 1.4.4 - 1.7.0</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/benmanbs">benmanbs</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
